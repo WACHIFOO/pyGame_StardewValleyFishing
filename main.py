@@ -22,7 +22,12 @@ if __name__ == '__main__':
     max_abajo = 370
     max_arriba = 37
     # Creamos lista de sprites
-    all_sprites = pygame.sprite.Group()
+    # all_sprites = pygame.sprite.Group()
+
+    # UX
+    ux_rect = ux.get_rect()
+    ux_rect.x = 300
+    ux_rect.y = 15
 
     pygame.display.flip()
     while playing:
@@ -35,9 +40,6 @@ if __name__ == '__main__':
         # Printamos la pantalla de negro
         # screen.fill(0)
         screen.blit(background, background.get_rect())
-        ux_rect = ux.get_rect()
-        ux_rect.x = 300
-        ux_rect.y = 15
         screen.blit(ux, ux_rect)
 
         pressed = pygame.key.get_pressed()
