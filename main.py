@@ -9,37 +9,52 @@ if __name__ == '__main__':
     clock = pygame.time.Clock()
 
     rectangulo = {
-        "X": 200,
-        "Y": 408,
+        "X": 380,
+        "Y": 370,
         "ancho": 30,
         "largo": 90,
     }
+    # Cargamos el fondo de pantalla
+    background = pygame.image.load("sprites/background.png")
+    ux = pygame.image.load("sprites/fishing_UX2.png")
+    pescado = pygame.image.load("sprites/Sardine.png")
+
+    max_abajo = 370
+    max_arriba = 37
+    # Creamos lista de sprites
+    all_sprites = pygame.sprite.Group()
 
     pygame.display.flip()
     while playing:
-        screen.fill(0)
 
         for event in pygame.event.get():
             playing = not (event.type == pygame.QUIT)
             # if event.type == pygame.QUIT:
             # playing = False
 
-        pressed = pygame.key.get_pressed()
+        # Printamos la pantalla de negro
+        # screen.fill(0)
+        screen.blit(background, background.get_rect())
+        ux_rect = ux.get_rect()
+        ux_rect.x = 300
+        ux_rect.y = 15
+        screen.blit(ux, ux_rect)
 
-        print(str(rectangulo["Y"]) + "-" + str(408 >= rectangulo["Y"] >= 100))
-        if 408 >= rectangulo["Y"] >= 100:
+        pressed = pygame.key.get_pressed()
+        print(str(rectangulo["Y"]) + "-" + str(max_abajo >= rectangulo["Y"] >= max_arriba))
+        if max_abajo >= rectangulo["Y"] >= max_arriba:
             if pressed[pygame.K_SPACE]:
                 rectangulo["Y"] -= 5
             else:
                 # Le ponemos gravedad al rectangulo
-                if rectangulo["Y"] < 408:
+                if rectangulo["Y"] < max_abajo:
                     rectangulo["Y"] += 8
 
         # Controlamos que no se pase
-        if rectangulo["Y"] > 408:
-            rectangulo["Y"] = 408
-        elif rectangulo["Y"] < 100:
-            rectangulo["Y"] = 100
+        if rectangulo["Y"] > max_abajo:
+            rectangulo["Y"] = max_abajo
+        elif rectangulo["Y"] < max_arriba:
+            rectangulo["Y"] = max_arriba
 
         # Limpiamos la pantalla pintandola de negro. Esto habría que cambiarlo segun el fondo
         # Printamos el rectangulo
