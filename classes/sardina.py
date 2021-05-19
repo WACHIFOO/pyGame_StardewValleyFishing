@@ -25,7 +25,10 @@ class Sardina:
         if self.sardina_rect.colliderect(player):
             self.puntuacion += 1
         else:
-            self.puntuacion -= 1
+            if self.puntuacion > 0:
+                self.puntuacion -= 1
+            else:
+                self.puntuacion = 0
 
     def check_win(self):
         """

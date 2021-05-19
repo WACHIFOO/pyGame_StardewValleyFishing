@@ -1,12 +1,14 @@
 from classes.game import Game
 from classes.player import Player
 from classes.sardina import Sardina
+from classes.scoreUX import ScoreUX
 import pygame
 
 if __name__ == '__main__':
     game = Game()
     player = Player()
     sardina = Sardina()
+    score = ScoreUX()
     game.flip()
     while game.playing:
         # Controlamos si se pulsa cerrar
@@ -26,6 +28,9 @@ if __name__ == '__main__':
         sardina.colision(player.player_rect)
         sardina.check_win()
         sardina.blit(game.screen)
+
+        # Printamos la puntuacion
+        score.draw(game.screen, sardina.puntuacion)
 
         # Finalizamos el latido
         game.end_hearthbeat()
