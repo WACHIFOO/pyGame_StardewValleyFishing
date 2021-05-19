@@ -13,27 +13,30 @@ class Sardina:
         self.puntuacion = 0
 
     def blit(self, screen):
+        """
+        Mostramos por pantalla la sardina
+        """
         screen.blit(self.sardina, self.sardina_rect)
 
     def colision(self, player):
+        """
+        Controlamos la colision contra el jugador
+        """
         if self.sardina_rect.colliderect(player):
             self.puntuacion += 1
         else:
             self.puntuacion -= 1
 
     def check_win(self):
+        """
+        Cuando llegue a 100 reiniciamos la puntacion y cambiamos de sitio
+        """
         if self.puntuacion >= 100:
             self.puntuacion = 0
             self.random_position()
 
-        # def start(self):
-        #     self.check_win()
-        #     self.colision()
-        """
-        check_win()
-        colision()
-        """
-        pass
-
     def random_position(self):
+        """
+        Cambiamos de sitio de manera random en el eje vertical
+        """
         self.sardina_rect.y = random.randint(self.max_arriba, self.max_abajo)
