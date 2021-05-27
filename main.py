@@ -1,79 +1,37 @@
+from classes.game import Game
+from classes.player import Player
+from classes.sardina import Sardina
+from classes.scoreUX import ScoreUX
 import pygame
 
 if __name__ == '__main__':
-    pygame.init()
+    game = Game()
+    player = Player()
+    sardina = Sardina()
+    score = ScoreUX()
+    game.flip()
+    while game.playing:
+        # Controlamos si se pulsa cerrar
+        game.trigger_quit_game()
 
-    screen = pygame.display.set_mode((500, 500))
-    pygame.display.set_caption("Juego de pesca")
-    playing = True
-    clock = pygame.time.Clock()
+        # Iniciamos el latido
+        game.start_hearthbeat()
 
-    rectangulo = {
-        "X": 380,
-        "Y": 370,
-        "ancho": 30,
-        "largo": 90,
-    }
-    # Cargamos el fondo de pantalla
-    background = pygame.image.load("sprites/background.png")
-    ux = pygame.image.load("sprites/fishing_UX2.png")
-    pescado = pygame.image.load("sprites/Sardine.png")
-
-    max_abajo = 370
-    max_arriba = 37
-    # Creamos lista de sprites
-    # all_sprites = pygame.sprite.Group()
-
-    # UX
-    ux_rect = ux.get_rect()
-    ux_rect.x = 300
-    ux_rect.y = 15
-
-    pygame.display.flip()
-    while playing:
-
-        for event in pygame.event.get():
-            playing = not (event.type == pygame.QUIT)
-            # if event.type == pygame.QUIT:
-            # playing = False
-
-        # Printamos la pantalla de negro
-        # screen.fill(0)
-        screen.blit(background, background.get_rect())
-        screen.blit(ux, ux_rect)
-
+        # Obtenemos la tecla pulsada y movemos el jugador
         pressed = pygame.key.get_pressed()
-        print(str(rectangulo["Y"]) + "-" + str(max_abajo >= rectangulo["Y"] >= max_arriba))
-        if max_abajo >= rectangulo["Y"] >= max_arriba:
-            if pressed[pygame.K_SPACE]:
-                rectangulo["Y"] -= 5
-            else:
-                # Le ponemos gravedad al rectangulo
-                if rectangulo["Y"] < max_abajo:
-                    rectangulo["Y"] += 8
+        player.movement(pressed)
 
-        # Controlamos que no se pase
-        if rectangulo["Y"] > max_abajo:
-            rectangulo["Y"] = max_abajo
-        elif rectangulo["Y"] < max_arriba:
-            rectangulo["Y"] = max_arriba
+        # Renderizamos el jugador
+        player.draw(game.screen)
 
-        # Limpiamos la pantalla pintandola de negro. Esto habría que cambiarlo segun el fondo
-        # Printamos el rectangulo
-        pygame.draw.rect(
-            screen,
-            (255, 128, 255),
-            pygame.Rect(
-                rectangulo["X"],
-                rectangulo["Y"],
-                rectangulo["ancho"],
-                rectangulo["largo"]
-            )
-        )
+        # Controlamos si el jugador esta sobre la recompensa
+        sardina.colision(player.player_rect)
+        sardina.check_win()
+        sardina.blit(game.screen)
 
-        ######################################
-        pygame.display.flip()
-        clock.tick(60)
-    pygame.quit()
-# See PyCharm help at https://www.jetbrains.com/help/pycharm/
-# http://programarcadegames.com/python_examples/show_file.php?file=game_class_example.py
+        # Printamos la puntuacion
+        score.draw(game.screen, sardina.puntuacion)
+
+        # Finalizamos el latido
+        game.end_hearthbeat()
+    game.quit_game()
