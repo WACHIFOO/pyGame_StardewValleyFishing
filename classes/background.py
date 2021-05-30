@@ -4,6 +4,7 @@ import pygame
 class Background:
     def __init__(self):
         self.background = pygame.image.load("sprites/background.png")
+        # self.background = pygame.transform.scale(self.background, (1280, 720)) # pygame.FULLSCREEN
         self.ux = pygame.image.load("sprites/fishing_UX2.png")
         self.ux_rect = self.ux.get_rect()
         self.ux_rect.x = 300
